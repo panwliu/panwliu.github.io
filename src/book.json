@@ -1,0 +1,25 @@
+{
+	"plugins" : [
+        "back-to-top-button",
+        "anchorjs",
+        "page-toc-button",
+        "richquotes",
+        "mathjax"
+    ],
+    "pluginsConfig": {
+        "page-toc-button": {
+            "maxTocDepth": 2,
+            "minTocSize": 2
+        },
+        "richquotes": {
+            "tip": {
+                "alert": "success",
+                "picto": "fa-thumbs-o-up"
+            },
+            "archived": {
+                "alert": "warning",
+                "picto": "fa-archive"
+            }
+        }
+    }
+}
