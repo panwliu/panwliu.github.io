@@ -295,12 +295,58 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="lqr">LQR</h1>
-<p>Linear Quadratic Regulator, or LQR, is the regulator that minimizes the quadratic  of linear systems. The optimal control problem begins with the linear system</p>
-<p><script type="math/tex; ">
-\dot{x} = Ax + Bu
-</script></p>
-<p>test <script type="math/tex; ">a+b</script></p>
+<p>Linear Quadratic Regulator, or LQR, is the regulator that minimizes the quadratic cost of linear systems. This optimal control problem begins with the linear system</p>
+<center>
+<script type="math/tex; "> \dot{x} = Ax + Bu </script>
+</center>
+It tries to find the control input <script type="math/tex; ">u</script> that minimize the cost
+<center>
+<script type="math/tex; "> J=\int_{0}^{t_f}x^TQx+u^TRu\ dt </script>
+</center>
+where <script type="math/tex; ">Q</script> and <script type="math/tex; ">R</script> are symmetric positive-definite matrices that provide user-specific weighting in the performance index.
+<br>
+
+This problem ends up with solving the differential Riccati equation (DRE)
+<center>
+<script type="math/tex; "> -\dot{S} = A^TS+SA-SBR^{-1}B^TS+Q </script>
+</center>
+The optimal state feedback controller is found to be <script type="math/tex; ">u=-Kx</script>, where
+<center>
+<script type="math/tex; "> K=R^{-1}B^TS </script>
+</center>
+
+<blockquote class="clearfix alert alert-success"><strong class="fa fa-2x fa-lightbulb-o"></strong>
+<p></p>
+<ol>
+<li>The DRE here is integrated backward in time from the final condition <script type="math/tex; ">S(t_f)</script>, rather than forward integration as the case in optimal estimation problem.</li>
+</ol>
+</blockquote>
+<h2 id="the-steady-state-solution">The steady-state solution</h2>
+<p>In <strong>some situations</strong>, the optimal gain <script type="math/tex; ">K</script> converges to a constant. If this is the case then we do not have to worry about integrating the DRE for <script type="math/tex; ">S</script> and about updating <script type="math/tex; ">K</script> in real time. This can provide a larget savings in computational effort at the cost of only a small sacrifice of performace.</p>
+<p>If <script type="math/tex; ">A,B,Q,R</script> are constant, then <script type="math/tex; ">S</script> may reach a steady-state value and <script type="math/tex; ">\dot{S}</script> eventually reach zero. This implies</p>
+<center>
+<script type="math/tex; "> A^TS+SA-SBR^{-1}B^TS+Q=0 </script>
+</center>
+This is called the algebraic Riccati equation (ARE). Or more specific, the continuous ARE (CARE). And the optimal gain is
+<center>
+<script type="math/tex; "> K(\infty)=R^{-1}B^TS(\infty) </script>
+</center>
+
 <h2 id="implement-lqr-in-python">Implement LQR in Python</h2>
+<p>In Matlab, the <a href="https://www.mathworks.com/help/control/ref/lqr.html" target="_blank">command</a> <code>lqr</code> is provided for solving the steady-state <script type="math/tex; ">K</script>.</p>
+<p>In Python, the <code>linalg</code> in <code>scipy</code> provide <code>solve_continuou_are</code> for solving steady-state <script type="math/tex; ">K</script>.</p>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lqr</span><span class="hljs-params">(A: np.matrix, B: np.matrix, Q: np.matrix, R: np.matrix)</span>:</span>
+    P = linalg.solve_continuous_are(A, B, Q, R)
+    K = R.I * B.T * P
+    <span class="hljs-keyword">return</span> K
+</code></pre>
+<p>Check out the <a href="https://github.com/panwliu/Estimation-and-Control-Library/blob/master/scripts/controller.py" target="_blank">controllers.py</a> in my GitHub.</p>
+<p>References:</p>
+<ol>
+<li><a href="https://onlinelibrary.wiley.com/doi/book/10.1002/0470045345" target="_blank">Optimal State Estimation: Kalman, H&#x221E;, and Nonlinear Approaches</a></li>
+<li><a href="http://www.uta.edu/utari/acs/FL%20books/Lewis%20optimal%20control%203rd%20edition%202012.pdf" target="_blank">Optimal Control</a> by Lewis, etc</li>
+<li><a href="http://www.mwm.im/lqr-controllers-with-python/" target="_blank">LQR Controllers with Python</a></li>
+</ol>
 
                                 
                                 </section>
@@ -340,7 +386,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"3.1 LQR","level":"2.3.1","depth":2,"next":{"title":"4. Estimation","level":"2.4","depth":1,"ref":"","articles":[{"title":"4.1 Kalman Filter","level":"2.4.1","depth":2,"ref":"","articles":[]},{"title":"4.2 Extended Kalman Filter","level":"2.4.2","depth":2,"ref":"","articles":[]},{"title":"4.3 Unscented Kalman Filter","level":"2.4.3","depth":2,"ref":"","articles":[]}]},"previous":{"title":"3. Controller","level":"2.3","depth":1,"path":"ecl_30_controller.md","ref":"ecl_30_controller.md","articles":[{"title":"3.1 LQR","level":"2.3.1","depth":2,"path":"ecl_31_lqr.md","ref":"ecl_31_lqr.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["back-to-top-button","anchorjs","page-toc-button","richquotes","mathjax","livereload"],"pluginsConfig":{"livereload":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{"tip":{"alert":"success","picto":"fa-thumbs-o-up"},"archived":{"alert":"warning","picto":"fa-archive"}},"highlight":{},"page-toc-button":{"maxTocDepth":2,"minTocSize":2},"back-to-top-button":{},"mathjax":{"forceSVG":false,"version":"2.6-latest"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ecl_31_lqr.md","mtime":"2020-05-30T12:57:19.079Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-05-30T12:57:46.713Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"3.1 LQR","level":"2.3.1","depth":2,"next":{"title":"4. Estimation","level":"2.4","depth":1,"ref":"","articles":[{"title":"4.1 Kalman Filter","level":"2.4.1","depth":2,"ref":"","articles":[]},{"title":"4.2 Extended Kalman Filter","level":"2.4.2","depth":2,"ref":"","articles":[]},{"title":"4.3 Unscented Kalman Filter","level":"2.4.3","depth":2,"ref":"","articles":[]}]},"previous":{"title":"3. Controller","level":"2.3","depth":1,"path":"ecl_30_controller.md","ref":"ecl_30_controller.md","articles":[{"title":"3.1 LQR","level":"2.3.1","depth":2,"path":"ecl_31_lqr.md","ref":"ecl_31_lqr.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["back-to-top-button","anchorjs","page-toc-button","richquotes","mathjax"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{"tip":{"alert":"success","picto":"fa-thumbs-o-up"},"archived":{"alert":"warning","picto":"fa-archive"}},"highlight":{},"page-toc-button":{"maxTocDepth":2,"minTocSize":2},"back-to-top-button":{},"mathjax":{"forceSVG":false,"version":"2.6-latest"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ecl_31_lqr.md","mtime":"2020-05-30T14:50:14.106Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-05-30T14:51:27.798Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
@@ -371,10 +417,6 @@
     
         
         <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
-        
-    
-        
-        <script src="gitbook/gitbook-plugin-livereload/plugin.js"></script>
         
     
         
