@@ -1,0 +1,3 @@
+# Optimal control
+
+## LQR
