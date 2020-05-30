@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Introduction · GitBook</title>
+        <title>2.1 Controllability · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -69,6 +69,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="ecl_30_controller.html" />
+    
     
 
     </head>
@@ -97,7 +99,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -144,7 +146,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.2.1" data-path="ecl_21_controllability.html">
+        <li class="chapter active" data-level="2.2.1" data-path="ecl_21_controllability.html">
             
                 <a href="ecl_21_controllability.html">
             
@@ -296,7 +298,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Introduction</a>
+        <a href="." >2.1 Controllability</a>
     </h1>
 </div>
 
@@ -311,14 +313,19 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="welcome">Welcome</h1>
-<p>This page documents the projects developed in my <a href="https://github.com/panwliu" target="_blank">GitHub</a>. These projects inlude:</p>
-<ul>
-<li><a href="https://github.com/panwliu/Estimation-and-Control-Library" target="_blank">Estimation and Control Library</a></li>
-<li>Reinforcement Learning Library</li>
-<li>SLAM Library</li>
-</ul>
-<p>If you want to know more about me, you can find the link <a href="https://panwliu.github.io/about/" target="_blank">here</a></p>
+                                <h1 id="controllability">Controllability</h1>
+<p>Consider a linear system <script type="math/tex; "> \dot{x} = Ax + Bu </script>, the controllability matrix is defined as</p>
+<p><center>
+<script type="math/tex; "> C = [B\ AB\ A^2B\cdots A^{n-1}B] </script>
+</center>
+This system is controllable iff <script type="math/tex; ">rank(C)=n</script></p>
+<blockquote class="clearfix alert alert-success"><strong class="fa fa-2x fa-lightbulb-o"></strong>
+<p></p>
+<ol>
+<li>uncontrollable vs. underactuated</li>
+</ol>
+</blockquote>
+<h2 id="controllability-gramian">Controllability Gramian</h2>
 
                                 
                                 </section>
@@ -347,6 +354,10 @@
             
                 
                 
+                <a href="ecl_30_controller.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 3. Controller">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
             
         
     </div>
@@ -354,7 +365,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"1. Dynamic Models","level":"2.1","depth":1,"ref":"","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["back-to-top-button","anchorjs","page-toc-button","richquotes","mathjax"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{"tip":{"alert":"success","picto":"fa-thumbs-o-up"},"archived":{"alert":"warning","picto":"fa-archive"}},"highlight":{},"page-toc-button":{"maxTocDepth":2,"minTocSize":2},"back-to-top-button":{},"mathjax":{"forceSVG":false,"version":"2.6-latest"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2020-05-30T13:01:28.555Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-05-30T21:01:18.560Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"2.1 Controllability","level":"2.2.1","depth":2,"next":{"title":"3. Controller","level":"2.3","depth":1,"path":"ecl_30_controller.md","ref":"ecl_30_controller.md","articles":[{"title":"3.1 LQR","level":"2.3.1","depth":2,"path":"ecl_31_lqr.md","ref":"ecl_31_lqr.md","articles":[]}]},"previous":{"title":"2. Control System","level":"2.2","depth":1,"ref":"","articles":[{"title":"2.1 Controllability","level":"2.2.1","depth":2,"path":"ecl_21_controllability.md","ref":"ecl_21_controllability.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["back-to-top-button","anchorjs","page-toc-button","richquotes","mathjax"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{"tip":{"alert":"success","picto":"fa-thumbs-o-up"},"archived":{"alert":"warning","picto":"fa-archive"}},"highlight":{},"page-toc-button":{"maxTocDepth":2,"minTocSize":2},"back-to-top-button":{},"mathjax":{"forceSVG":false,"version":"2.6-latest"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ecl_21_controllability.md","mtime":"2020-05-30T15:18:03.550Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-05-30T21:01:18.560Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

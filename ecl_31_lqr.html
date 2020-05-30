@@ -143,6 +143,25 @@
             
 
             
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.2.1" data-path="ecl_21_controllability.html">
+            
+                <a href="ecl_21_controllability.html">
+            
+                    
+                    2.1 Controllability
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
         </li>
     
         <li class="chapter " data-level="2.3" data-path="ecl_30_controller.html">
@@ -217,14 +236,14 @@
             
         </li>
     
-        <li class="chapter " data-level="2.4.3" >
+        <li class="chapter " data-level="2.4.3" data-path="ecl_43_ukf.html">
             
-                <span>
+                <a href="ecl_43_ukf.html">
             
                     
                     4.3 Unscented Kalman Filter
             
-                </span>
+                </a>
             
 
             
@@ -341,7 +360,22 @@ This is called the algebraic Riccati equation (ARE). Or more specific, the conti
     <span class="hljs-keyword">return</span> K
 </code></pre>
 <p>Check out the <a href="https://github.com/panwliu/Estimation-and-Control-Library/blob/master/scripts/controller.py" target="_blank">controllers.py</a> in my GitHub.</p>
-<p>References:</p>
+<h2 id="demo">Demo</h2>
+<p>The LQR is tested on a simulated cartpole in the Ignition Gazebo. In this example, the parameters for the model are
+<script type="math/tex; ">m_c=1</script>, <script type="math/tex; ">m_p=0.5</script> and <script type="math/tex; ">l=1</script>. The resulting linearized model is</p>
+<pre><code class="lang-python">A = np.mat(<span class="hljs-string">&quot;0 0 1 0; 0 0 0 1; 0 -4.9 0 0; 0 14.7 0 0&quot;</span>)
+B = np.mat(<span class="hljs-string">&quot;0; 0; 2; -1&quot;</span>)
+Q = np.mat(<span class="hljs-string">&quot;1 0 0 0; 0 1 0 0; 0 0 0.5 0; 0 0 0 0.5&quot;</span>)
+R = np.mat(<span class="hljs-string">&quot;1&quot;</span>)
+K = controller.lqr(A, B, Q, R)
+K = np.asarray(K)
+
+action = <span class="hljs-number">0.1</span> <span class="hljs-keyword">if</span> k_step&lt;<span class="hljs-number">500</span> <span class="hljs-keyword">else</span> -np.dot(K, states_real[:,k_step<span class="hljs-number">-1</span>])
+</code></pre>
+<center><iframe width="560" height="315" src="https://www.youtube.com/embed/90J-i_QF6PQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+
+<p><br>
+References:</p>
 <ol>
 <li><a href="https://onlinelibrary.wiley.com/doi/book/10.1002/0470045345" target="_blank">Optimal State Estimation: Kalman, H&#x221E;, and Nonlinear Approaches</a></li>
 <li><a href="http://www.uta.edu/utari/acs/FL%20books/Lewis%20optimal%20control%203rd%20edition%202012.pdf" target="_blank">Optimal Control</a> by Lewis, etc</li>
@@ -386,7 +420,7 @@ This is called the algebraic Riccati equation (ARE). Or more specific, the conti
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"3.1 LQR","level":"2.3.1","depth":2,"next":{"title":"4. Estimation","level":"2.4","depth":1,"ref":"","articles":[{"title":"4.1 Kalman Filter","level":"2.4.1","depth":2,"ref":"","articles":[]},{"title":"4.2 Extended Kalman Filter","level":"2.4.2","depth":2,"ref":"","articles":[]},{"title":"4.3 Unscented Kalman Filter","level":"2.4.3","depth":2,"ref":"","articles":[]}]},"previous":{"title":"3. Controller","level":"2.3","depth":1,"path":"ecl_30_controller.md","ref":"ecl_30_controller.md","articles":[{"title":"3.1 LQR","level":"2.3.1","depth":2,"path":"ecl_31_lqr.md","ref":"ecl_31_lqr.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["back-to-top-button","anchorjs","page-toc-button","richquotes","mathjax"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{"tip":{"alert":"success","picto":"fa-thumbs-o-up"},"archived":{"alert":"warning","picto":"fa-archive"}},"highlight":{},"page-toc-button":{"maxTocDepth":2,"minTocSize":2},"back-to-top-button":{},"mathjax":{"forceSVG":false,"version":"2.6-latest"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ecl_31_lqr.md","mtime":"2020-05-30T14:50:14.106Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-05-30T14:51:27.798Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"3.1 LQR","level":"2.3.1","depth":2,"next":{"title":"4. Estimation","level":"2.4","depth":1,"ref":"","articles":[{"title":"4.1 Kalman Filter","level":"2.4.1","depth":2,"ref":"","articles":[]},{"title":"4.2 Extended Kalman Filter","level":"2.4.2","depth":2,"ref":"","articles":[]},{"title":"4.3 Unscented Kalman Filter","level":"2.4.3","depth":2,"path":"ecl_43_ukf.md","ref":"ecl_43_ukf.md","articles":[]}]},"previous":{"title":"3. Controller","level":"2.3","depth":1,"path":"ecl_30_controller.md","ref":"ecl_30_controller.md","articles":[{"title":"3.1 LQR","level":"2.3.1","depth":2,"path":"ecl_31_lqr.md","ref":"ecl_31_lqr.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["back-to-top-button","anchorjs","page-toc-button","richquotes","mathjax"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{"tip":{"alert":"success","picto":"fa-thumbs-o-up"},"archived":{"alert":"warning","picto":"fa-archive"}},"highlight":{},"page-toc-button":{"maxTocDepth":2,"minTocSize":2},"back-to-top-button":{},"mathjax":{"forceSVG":false,"version":"2.6-latest"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ecl_31_lqr.md","mtime":"2020-05-30T20:58:54.041Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-05-30T21:01:18.560Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

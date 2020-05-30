@@ -49,6 +49,25 @@ def lqr(A: np.matrix, B: np.matrix, Q: np.matrix, R: np.matrix):
 ```
 Check out the [controllers.py](https://github.com/panwliu/Estimation-and-Control-Library/blob/master/scripts/controller.py) in my GitHub.
 
+## Demo
+
+The LQR is tested on a simulated cartpole in the Ignition Gazebo. In this example, the parameters for the model are
+$$m_c=1$$, $$m_p=0.5$$ and $$l=1$$. The resulting linearized model is
+
+```python
+A = np.mat("0 0 1 0; 0 0 0 1; 0 -4.9 0 0; 0 14.7 0 0")
+B = np.mat("0; 0; 2; -1")
+Q = np.mat("1 0 0 0; 0 1 0 0; 0 0 0.5 0; 0 0 0 0.5")
+R = np.mat("1")
+K = controller.lqr(A, B, Q, R)
+K = np.asarray(K)
+
+action = 0.1 if k_step<500 else -np.dot(K, states_real[:,k_step-1])
+```
+
+<center><iframe width="560" height="315" src="https://www.youtube.com/embed/90J-i_QF6PQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+
+<br/>
 References:
 1. [Optimal State Estimation: Kalman, H∞, and Nonlinear Approaches](https://onlinelibrary.wiley.com/doi/book/10.1002/0470045345)
 1. [Optimal Control](http://www.uta.edu/utari/acs/FL%20books/Lewis%20optimal%20control%203rd%20edition%202012.pdf) by Lewis, etc
