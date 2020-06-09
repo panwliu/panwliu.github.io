@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>3.1 LQR · GitBook</title>
+        <title>1.1 Rigid Body Motion · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -70,8 +70,6 @@
 
     
     
-    <link rel="prev" href="ecl_30_controller.html" />
-    
 
     </head>
     <body>
@@ -133,7 +131,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.1" data-path="ecl_11_rigidbody.html">
+        <li class="chapter active" data-level="2.1.1" data-path="ecl_11_rigidbody.html">
             
                 <a href="ecl_11_rigidbody.html">
             
@@ -197,7 +195,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="2.3.1" data-path="ecl_31_lqr.html">
+        <li class="chapter " data-level="2.3.1" data-path="ecl_31_lqr.html">
             
                 <a href="ecl_31_lqr.html">
             
@@ -330,7 +328,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >3.1 LQR</a>
+        <a href="." >1.1 Rigid Body Motion</a>
     </h1>
 </div>
 
@@ -345,74 +343,104 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="lqr">LQR</h1>
-<p>Linear Quadratic Regulator, or LQR, is the regulator that minimizes the quadratic cost of linear systems. This optimal control problem begins with the linear system</p>
+                                <h1 id="rigid-body-motion">Rigid Body Motion</h1>
+<p>The study of robot kinematics, dynamics, and control has at its heart the study of the motion of rigid objects. Many robot applications fall into the range of motion planning, state estimation and control. They are built based on rigid body motion.</p>
+<p>Mathematically, the rigid body motion is represented by the rigid transformation, which is a map <script type="math/tex; ">g: \mathbb{R}^3 \rightarrow \mathbb{R}^3</script> that preserves the distances between points and cross products between vectors. Preserving cross products is for preventing reflection.</p>
+<p>A matrix is natrually related to rotation and scaling. To this end, the rotation matrices is a collection of matrices that satisfy above conditions. Furthermore, since cross product is a linear operator, angular velocity can also be represented as matrix. Similarly, the rigid motion can be represented as matrix.</p>
+<h2 id="rotational-motion-so3-and-so3">Rotational motion: SO(3) and so(3)</h2>
+<p>The set of all rotation matrix <script type="math/tex; ">R</script> is denoted the special orthogonal group <script type="math/tex; ">SO(3)</script>. More formally,</p>
 <center>
-<script type="math/tex; "> \dot{x} = Ax + Bu </script>
+<script type="math/tex; "> SO(3) = \{R\in\mathbb{R}^{3\times3}:RR^T=I,\ detR=+1\}  </script>
 </center>
-It tries to find the control input <script type="math/tex; ">u</script> that minimize the cost
-<center>
-<script type="math/tex; "> J=\int_{0}^{t_f}x^TQx+u^TRu\ dt </script>
-</center>
-where <script type="math/tex; ">Q</script> and <script type="math/tex; ">R</script> are symmetric positive-definite matrices that provide user-specific weighting in the performance index.
-<br>
 
-This problem ends up with solving the differential Riccati equation (DRE)
+<p>The <script type="math/tex; ">SO(3)</script> is a group under the operation of matrix multiplication. The rotation matrix <script type="math/tex; ">R_{ab}</script>, from the body frame <script type="math/tex; ">B</script> to the inertial frame <script type="math/tex; ">A</script>, is constructed by stacking the coordinates of the principal axes of <script type="math/tex; ">B</script> relative to <script type="math/tex; ">A</script>, i.e.</p>
 <center>
-<script type="math/tex; "> -\dot{S} = A^TS+SA-SBR^{-1}B^TS+Q </script>
+<script type="math/tex; "> R_{ab} = [\mathbf{x_{ab}}\ \mathbf{y_{ab}}\ \mathbf{z_{ab}}]  </script>
 </center>
-The optimal state feedback controller is found to be <script type="math/tex; ">u=-Kx</script>, where
+
+<p>Three ways to think of <script type="math/tex; ">R</script></p>
+<ol>
+<li>representation of the orientation, also called the <em>configuration</em></li>
+<li>a transformation that maps a point in body frame to the inertial frame</li>
+<li>the rotation motion that rotates a point</li>
+</ol>
+<p>The space of 3 by 3 skew-symmetric matrices is</p>
 <center>
-<script type="math/tex; "> K=R^{-1}B^TS </script>
+<script type="math/tex; "> so(3) = \{S\in\mathbb{R}^{3\times3}: S^T=-S\}  </script>
+</center>
+
+<p>The elements in <script type="math/tex; ">so(3)</script> naturally relate to angular velocity. To see this connection, we need to see how a skew-symmetric matrix is connected with the cross product by defining the hat map <script type="math/tex; ">\hat{\bullet }</script>. Since the cross product <script type="math/tex; ">a\times b</script> is a linear operator, it can be represented using matrix, i.e.</p>
+<center>
+<script type="math/tex; "> a \times b = \hat{a}b </script>
+</center>
+where 
+<center>
+<script type="math/tex; "> \hat{a} = \left[ \begin{array}{ccc}
+0 & -a_3 & a_2  \\ 
+a_3 & 0 & -a_1 \\ 
+-a_2 & a_1 & 0  \\ 
+\end{array} \right] </script>
+</center>
+
+<p>The velocity of a purely rotating particle is <script type="math/tex; ">\dot{q}(t)=\omega\times q(t)=\hat{\omega}q(t)</script>. This naturally relates <script type="math/tex; ">\hat{\omega}\in so(3)</script> with angular velocity <script type="math/tex; ">\omega</script>.</p>
+<h3 id="exponential-map">Exponential map</h3>
+<p>The elements in <script type="math/tex; ">SO(3)</script> and <script type="math/tex; ">so(3)</script> are related by exponential transformation. Assume <script type="math/tex; ">\left \| \omega \right \|=1</script>, we have the <em>Rodrigues&apos; formula</em></p>
+<center>
+<script type="math/tex; "> e^{\hat{\omega}\theta} \in SO(3) =I+\hat{\omega}\sin{\theta}+\hat{\omega}^2(1-\cos{\theta}) </script>
+</center>
+
+<p>The exponential map is surjective onto (many-to-one) <script type="math/tex; ">SO(3)</script>. Given <script type="math/tex; ">R=[r_{ij}]</script>, </p>
+<center>
+<script type="math/tex; "> \theta=\cos^{-1}\frac{trace(R)-1}{2} </script>
+<center>
+</center>
+<script type="math/tex; "> \omega=\frac{1}{2\sin\theta}\begin{bmatrix}
+r_{32}-r_{23}\\ 
+r_{13}-r_{31}\\\ 
+r_{21}-r_{12}
+\end{bmatrix} </script>
+</center>
+
+<h3 id="other-representations">Other representations</h3>
+<p>Other widely used representations for rotation include Euler angles and quaternions. Euler angles are essentially three consecutive rotations. This representation is intuitive but subject to singularity issue, i.e. the gimbal lock. Quaternion uses four variables to describe the axis of rotation and magnitude of rotation and is normally normalized, i.e. <script type="math/tex; ">q=(\cos(\theta/2),\ \omega\sin(\theta/2))</script>. Conversion between quaternion and rotation matrix can be done using the above equations in exponential map.</p>
+<h2 id="rigid-motion-se3-and-se3">Rigid motion: SE(3) and se(3)</h2>
+<p>The configuration space of a rigid body, the special Euclidean group <script type="math/tex; ">SE(3)</script>, is the product space of <script type="math/tex; ">\mathbb{R}^3</script> with <script type="math/tex; ">SO(3)</script>, i.e.</p>
+<center>
+<script type="math/tex; "> SE(3) = \{(p,R):p\in\mathbb{R}^3,\ R\in SO(3)\} = \mathbb{R}^3\times SO(3)</script>
+</center>
+
+<p>Three ways to think of an element in <script type="math/tex; ">SE(3)</script> are the same as <script type="math/tex; ">SO(3)</script>. The transformation is <script type="math/tex; ">q_a=g(q_b)=p+Rq_b</script>. Given <script type="math/tex; ">g=(p,R)\in SE(3)</script>, the <em>homogeneous representation</em> of <script type="math/tex; ">g</script> is</p>
+<center>
+<script type="math/tex; ">\bar{g}=\begin{bmatrix}
+R & p\\ 
+0 & 1
+\end{bmatrix}</script>
+</center>
+And its inverse is
+<center>
+<script type="math/tex; ">\bar{g}^{-1}=\begin{bmatrix}
+R^T & -R^Tp\\ 
+0 & 1
+\end{bmatrix}\in SE(3)</script>
+</center>
+
+<p>Generalize the skew-symmetric matrix <script type="math/tex; ">\hat{\omega}\in so(3)</script>, we define <script type="math/tex; ">se(3)</script> as</p>
+<center>
+<script type="math/tex; "> se(3) := \{(v,\hat{\omega}):v\in\mathbb{R}^3,\ \hat{\omega}\in so(3)\} </script>.
+</center>
+And the _homogeneous representation_ of <script type="math/tex; ">\xi=[v\ \omega]^T\in se(3)</script>
+<center>
+<script type="math/tex; ">\hat{\xi}=\begin{bmatrix}
+\hat{\omega} & v\\ 
+0 & 0
+\end{bmatrix}\in SE(3)</script>
 </center>
 
 <blockquote class="clearfix alert alert-success"><strong class="fa fa-2x fa-lightbulb-o"></strong>
-<p></p>
-<ol>
-<li>The DRE here is integrated backward in time from the final condition <script type="math/tex; ">S(t_f)</script>, rather than forward integration as the case in optimal estimation problem.</li>
-</ol>
+<p>
+Note that the <script type="math/tex; ">\omega</script> is the rotational velocity of the object, while <script type="math/tex; ">v</script> is not the translational velocity.</p>
 </blockquote>
-<h2 id="the-steady-state-solution">The steady-state solution</h2>
-<p>In <strong>some situations</strong>, the optimal gain <script type="math/tex; ">K</script> converges to a constant. If this is the case then we do not have to worry about integrating the DRE for <script type="math/tex; ">S</script> and about updating <script type="math/tex; ">K</script> in real time. This can provide a larget savings in computational effort at the cost of only a small sacrifice of performace.</p>
-<p>If <script type="math/tex; ">A,B,Q,R</script> are constant, then <script type="math/tex; ">S</script> may reach a steady-state value and <script type="math/tex; ">\dot{S}</script> eventually reach zero. This implies</p>
-<center>
-<script type="math/tex; "> A^TS+SA-SBR^{-1}B^TS+Q=0 </script>
-</center>
-This is called the algebraic Riccati equation (ARE). Or more specific, the continuous ARE (CARE). And the optimal gain is
-<center>
-<script type="math/tex; "> K(\infty)=R^{-1}B^TS(\infty) </script>
-</center>
-
-<h2 id="implement-lqr-in-python">Implement LQR in Python</h2>
-<p>In Matlab, the <a href="https://www.mathworks.com/help/control/ref/lqr.html" target="_blank">command</a> <code>lqr</code> is provided for solving the steady-state <script type="math/tex; ">K</script>.</p>
-<p>In Python, the <code>linalg</code> in <code>scipy</code> provide <code>solve_continuou_are</code> for solving steady-state <script type="math/tex; ">K</script>.</p>
-<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lqr</span><span class="hljs-params">(A: np.matrix, B: np.matrix, Q: np.matrix, R: np.matrix)</span>:</span>
-    P = linalg.solve_continuous_are(A, B, Q, R)
-    K = R.I * B.T * P
-    <span class="hljs-keyword">return</span> K
-</code></pre>
-<p>Check out the <a href="https://github.com/panwliu/Estimation-and-Control-Library/blob/master/scripts/controller.py" target="_blank">controllers.py</a> in my GitHub.</p>
-<h2 id="demo">Demo</h2>
-<p>The LQR is tested on a simulated cartpole in the Ignition Gazebo. In this example, the parameters for the model are
-<script type="math/tex; ">m_c=1</script>, <script type="math/tex; ">m_p=0.5</script> and <script type="math/tex; ">l=1</script>. The resulting linearized model is</p>
-<pre><code class="lang-python">A = np.mat(<span class="hljs-string">&quot;0 0 1 0; 0 0 0 1; 0 -4.9 0 0; 0 14.7 0 0&quot;</span>)
-B = np.mat(<span class="hljs-string">&quot;0; 0; 2; -1&quot;</span>)
-Q = np.mat(<span class="hljs-string">&quot;1 0 0 0; 0 1 0 0; 0 0 0.5 0; 0 0 0 0.5&quot;</span>)
-R = np.mat(<span class="hljs-string">&quot;1&quot;</span>)
-K = controller.lqr(A, B, Q, R)
-K = np.asarray(K)
-
-action = <span class="hljs-number">0.1</span> <span class="hljs-keyword">if</span> k_step&lt;<span class="hljs-number">500</span> <span class="hljs-keyword">else</span> -np.dot(K, states_real[:,k_step<span class="hljs-number">-1</span>])
-</code></pre>
-<center><iframe width="560" height="315" src="https://www.youtube.com/embed/90J-i_QF6PQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
-
-<p><br>
-References:</p>
-<ol>
-<li><a href="https://onlinelibrary.wiley.com/doi/book/10.1002/0470045345" target="_blank">Optimal State Estimation: Kalman, H&#x221E;, and Nonlinear Approaches</a></li>
-<li><a href="http://www.uta.edu/utari/acs/FL%20books/Lewis%20optimal%20control%203rd%20edition%202012.pdf" target="_blank">Optimal Control</a> by Lewis, etc</li>
-<li><a href="http://www.mwm.im/lqr-controllers-with-python/" target="_blank">LQR Controllers with Python</a></li>
-</ol>
+<p>Exponential map also exists between elements in <script type="math/tex; ">SE(3)</script> and <script type="math/tex; ">se(3)</script>, but with a more complicated form.</p>
 
                                 
                                 </section>
@@ -440,10 +468,6 @@ References:</p>
 
             
                 
-                <a href="ecl_30_controller.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 3. Controller">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-                
                 
             
         
@@ -452,7 +476,7 @@ References:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"3.1 LQR","level":"2.3.1","depth":2,"next":{"title":"4. Estimation","level":"2.4","depth":1,"ref":"","articles":[{"title":"4.1 Kalman Filter","level":"2.4.1","depth":2,"ref":"","articles":[]},{"title":"4.2 Extended Kalman Filter","level":"2.4.2","depth":2,"ref":"","articles":[]},{"title":"4.3 Unscented Kalman Filter","level":"2.4.3","depth":2,"path":"ecl_43_ukf.md","ref":"ecl_43_ukf.md","articles":[]},{"title":"4.4 Particle Filter","level":"2.4.4","depth":2,"ref":"","articles":[]}]},"previous":{"title":"3. Controller","level":"2.3","depth":1,"path":"ecl_30_controller.md","ref":"ecl_30_controller.md","articles":[{"title":"3.1 LQR","level":"2.3.1","depth":2,"path":"ecl_31_lqr.md","ref":"ecl_31_lqr.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["back-to-top-button","anchorjs","page-toc-button","richquotes","mathjax"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{"tip":{"alert":"success","picto":"fa-thumbs-o-up"},"archived":{"alert":"warning","picto":"fa-archive"}},"highlight":{},"page-toc-button":{"maxTocDepth":2,"minTocSize":2},"back-to-top-button":{},"mathjax":{"forceSVG":false,"version":"2.6-latest"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ecl_31_lqr.md","mtime":"2020-05-30T20:58:54.041Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-09T21:39:57.199Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"1.1 Rigid Body Motion","level":"2.1.1","depth":2,"next":{"title":"2. Control System","level":"2.2","depth":1,"ref":"","articles":[{"title":"2.1 Controllability","level":"2.2.1","depth":2,"path":"ecl_21_controllability.md","ref":"ecl_21_controllability.md","articles":[]}]},"previous":{"title":"1. Dynamic Models","level":"2.1","depth":1,"ref":"","articles":[{"title":"1.1 Rigid Body Motion","level":"2.1.1","depth":2,"path":"ecl_11_rigidbody.md","ref":"ecl_11_rigidbody.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["back-to-top-button","anchorjs","page-toc-button","richquotes","mathjax"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{"tip":{"alert":"success","picto":"fa-thumbs-o-up"},"archived":{"alert":"warning","picto":"fa-archive"}},"highlight":{},"page-toc-button":{"maxTocDepth":2,"minTocSize":2},"back-to-top-button":{},"mathjax":{"forceSVG":false,"version":"2.6-latest"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ecl_11_rigidbody.md","mtime":"2020-06-09T21:39:17.377Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-09T21:39:57.199Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
